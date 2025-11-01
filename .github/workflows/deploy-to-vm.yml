@@ -20,12 +20,12 @@ jobs:
         run: |
           echo "$VM_SSH_KEY" > vm_key.pem
           chmod 600 vm_key.pem
-          ssh -o StrictHostKeyChecking=no -i vm_key.pem $VM_USERNAME@$VM_HOST 'bash -s' <<'EOF'
+          ssh -o StrictHostKeyChecking=no -i vm_key.pem $VM_USERNAME@$VM_HOST << 'EOF'
             mkdir -p /home/$VM_USERNAME/app
             pkill -f "python3 madlibs.py" || true
           EOF
           scp -o StrictHostKeyChecking=no -i vm_key.pem -r ./* $VM_USERNAME@$VM_HOST:/home/$VM_USERNAME/app
-          ssh -o StrictHostKeyChecking=no -i vm_key.pem $VM_USERNAME@$VM_HOST 'bash -s' <<'EOF'
+          ssh -o StrictHostKeyChecking=no -i vm_key.pem $VM_USERNAME@$VM_HOST << 'EOF'
             cd /home/$VM_USERNAME/app
             python3 -m pip install flask
             nohup python3 madlibs.py >> app.log 2>&1 &
